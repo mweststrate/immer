@@ -786,6 +786,34 @@ describe("sets - mutate - 1", () => {
 	)
 })
 
+describe("typed arrays - patch", () => {
+	it("throws for all `op`s", () => {
+		const arr = new Uint16Array(1)
+		expect(() =>
+			applyPatches(arr, [{op: "add", path: [0], value: 1}])
+		).toThrowErrorMatchingSnapshot()
+
+		expect(() =>
+			applyPatches(arr, [{op: "remove", path: [0]}])
+		).toThrowErrorMatchingSnapshot()
+
+		expect(() =>
+			applyPatches(arr, [{op: "replace", path: [0], value: 1}])
+		).toThrowErrorMatchingSnapshot()
+	})
+
+	it("should be empty", () => {
+		const arr = new Uint16Array(1)
+
+		const [_, patches, inversePatches] = produceWithPatches(arr, draft => {
+			draft[0] = 5
+		})
+
+		expect(patches).toEqual([])
+		expect(inversePatches).toEqual([])
+	})
+})
+
 describe("arrays - splice should should result in remove op.", () => {
 	// These patches were more optimal pre immer 7, but not always correct
 	runPatchTest(

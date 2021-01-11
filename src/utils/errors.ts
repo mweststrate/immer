@@ -31,14 +31,15 @@ const errors = {
 	},
 	20: "Cannot use proxies if Proxy, Proxy.revocable or Reflect are not available",
 	21(thing: string) {
-		return `produce can only be called on things that are draftable: plain objects, arrays, Map, Set or classes that are marked with '[immerable]: true'. Got '${thing}'`
+		return `produce can only be called on things that are draftable: plain objects, arrays, Map, Set, TypedArray or classes that are marked with '[immerable]: true'. Got '${thing}'`
 	},
 	22(thing: string) {
 		return `'current' expects a draft, got: ${thing}`
 	},
 	23(thing: string) {
 		return `'original' expects a draft, got: ${thing}`
-	}
+	},
+	24: "TypedArrays cannot have patches."
 } as const
 
 export function die(error: keyof typeof errors, ...args: any[]): never {
